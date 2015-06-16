@@ -1,0 +1,2 @@
+# knowledge_representation_assignment
+Tätää
