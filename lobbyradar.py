@@ -19,16 +19,27 @@ entities = Entities.find(entity_filter)
 
 # The Graph
 g = Graph()
+g.bind("dc", DC)
+g.bind("foaf", FOAF)
+g.bind("org", ORG)
 
-projection = {'_id':0, 'name':1}
-for person in Entities.find(person_filter, projection):
+for entity in Entities.find({}):
     node = BNode()
-    g.add((node, RDF.type, FOAF.Person))
-    g.add((node, FOAF.name, Literal(person["name"])))
+    # DC
+    g.add((node, DC.identifier, Literal(entity["_id"])))
+    g.add((node, DC.created, Literal(entity["created"])))
+    g.add((node, DC.modified, Literal(entity["updated"])))
+    # RDF
+    if entity['type'] == 'person':
+        g.add((node, RDF.type, FOAF.Person))
+        g.add((node, FOAF.name, Literal(entity["name"])))
 
-projection = {'_id':0, 'name':1}
-for entity in Entities.find(entity_filter, projection):
-    node = BNode()
-    g.add((node, RDF.type, ORG.Organization))
-    g.add((node, SKOS.prefLabel, Literal(entity["name"])))
+    elif entity['type'] == 'entity':
+        g.add((node, RDF.type, ORG.Organization))
+        g.add((node, SKOS.prefLabel, Literal(entity["name"])))
+        for alias in entity["aliases"]:
+            g.add((node, SKOS.altLabel, Literal(alias)))
+    # FOAF
+    for tag in entity['tags']:
+        g.add((node, FOAF.topic_intest, Literal(tag)))
 
