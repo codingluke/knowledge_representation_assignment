@@ -31,7 +31,7 @@ class lobbyPerson:
         graph.add((p, DC.identifier, Literal(self.id)))
         
 class lobbyEntity:
-    """RDF-iable person object from lobbyradar person"""
+    """RDF-iable entity object from lobbyradar person"""
     def __init__(self, entity):
         if (entity['type'] == 'entity'):
             self.name = entity.get('name')
