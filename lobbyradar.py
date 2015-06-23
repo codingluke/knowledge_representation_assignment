@@ -22,6 +22,7 @@ g = Graph()
 g.bind("dc", DC)
 g.bind("foaf", FOAF)
 g.bind("org", ORG)
+g.bind("skos", SKOS)
 
 for entity in Entities.find({}):
     node = BNode()
