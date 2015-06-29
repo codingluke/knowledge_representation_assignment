@@ -1,0 +1,36 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .  
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix : <http://example.org> .
+
+# T-Box:
+:Party a rdfs:Class ;
+       rdfs:subClassOf org:Organization ;
+       rdfs:
+
+:Politician a rdfs:Class ;
+           rdfs:subClassOf foaf:Person .
+
+:isMemberOf a rdf:Property ;
+            rdfs:domain :Party ;
+            rdfs:range :Politician .
+
+:Lobbyist a rdfs:Class ;
+          rdfs:subClassOf foaf:Person .
+
+
+:Lecture a rdfs:Class ;
+rdfs:subClassOf :Course .
+:Seminar a rdfs:Class ;
+rdfs:subClassOf :Course .
+:Reseacher a rdfs:Class .
+:Lecturer a rdfs:Class .
+:Professor a rdfs:Class ;
+rdfs:subClassOf :Lecturer ;
+rdfs:subClassOf :Reseacher .
+:AssistentLecturer a rdfs:Class ;
+rdfs:subClassOf :Lecturer .
+:isManagedBy a rdf:Property ;
+             rdfs:domain :Course ;
+             rdfs:range :Lecturer .
