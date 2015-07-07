@@ -3,35 +3,53 @@
 @prefix org: <http://www.w3.org/ns/org#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix dcam: <http://purl.org/dc/dcam/> .
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
 @prefix : <http://example.org> .
 
 # T-Box:
 :Party a rdfs:Class ;
-       rdfs:subClassOf org:Organization ;
-       rdfs:
-
+  rdfs:subClassOf org:Organization .
 :Politician a rdfs:Class ;
-           rdfs:subClassOf foaf:Person .
+  rdfs:subClassOf foaf:Person .
+:Lobbyist a rdfs:Class ;
+  rdfs:subClassOf foaf:Person .
+:Source a rdfs:Class ;
+  rdfs:subClassOf dc:source .
+:Address a rdfs:Class ;
+  rdfs:subClassOf vcard:ADR .
+:Description a rdfs:Class ;
+  rdfs:subClassOf dc:description .
+:Topic a rdfs:Class ;
+  rdfs:subClassOf foaf:topic .
+:LegalForm a rdfs:Class .
+:From a rdfs:Class ;
+  rdfs:subClassOf dc:date .
+:To a rdfs:Class ;
+  rdfs:subClassOf dc:date .
+:Homepage a rdfs:Class ;
+  rdfs:subClassOf foaf:homepage .
+:Title a rdfs:Class ;
+  rdfs:subClassOf dc:title .
+:Photo a rdfs:Class ;
+  rdfs:subClassOf foaf:Image .
+
 
 :isMemberOf a rdf:Property ;
-            rdfs:domain :Party ;
-            rdfs:range :Politician .
-
-:Lobbyist a rdfs:Class ;
-          rdfs:subClassOf foaf:Person .
-
-
-:Lecture a rdfs:Class ;
-rdfs:subClassOf :Course .
-:Seminar a rdfs:Class ;
-rdfs:subClassOf :Course .
-:Reseacher a rdfs:Class .
-:Lecturer a rdfs:Class .
-:Professor a rdfs:Class ;
-rdfs:subClassOf :Lecturer ;
-rdfs:subClassOf :Reseacher .
-:AssistentLecturer a rdfs:Class ;
-rdfs:subClassOf :Lecturer .
-:isManagedBy a rdf:Property ;
-             rdfs:domain :Course ;
-             rdfs:range :Lecturer .
+  rdfs:domain :Party ;
+  rdfs:range :Politician .
+:isExecutiveOf a rdf:Property ;
+  rdfs:domain :Party ;
+  rdfs:range :Politician .
+:isDonator a rdf:Property ;
+  rdfs:domain :Party ;
+  rdfs:range :Person .
+:isInBusinessWith a rdf:Property ;
+  rdfs:domain :Party ;
+  rdfs:range :Person .
+:isRelatedTo a rdf:Property ;
+  rdfs:domain rdfs:Class ;
+  rdfs:range rdfs:Class .
+:isSubsadiaryOf a rdf:Property ;
+  rdfs:domain :Party ;
+  rdfs:range :Party .
