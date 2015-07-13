@@ -33,7 +33,12 @@
   rdfs:subClassOf dc:title .
 :Photo a rdfs:Class ;
   rdfs:subClassOf foaf:Image .
-
+:Bundesland a rdf:Class ;
+  rdfs:subClassOf vcard:locality .
+:BTCertUID a rdf:Class ;
+  rdfs:subClassOf foaf:OnlineAccount .
+:Constituency a rdf:Class ;
+  rdfs:subClassOf vcard:region .
 
 :isMemberOf a rdf:Property ;
   rdfs:domain :Party ;
