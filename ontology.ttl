@@ -39,22 +39,65 @@
   rdfs:subClassOf foaf:OnlineAccount .
 :Constituency a rdf:Class ;
   rdfs:subClassOf vcard:region .
+:Government a rdfs:Class ;
+  rdfs:subClassOf org:Organization .
 
-:isMemberOf a rdf:Property ;
-  rdfs:domain :Politician .
-  rdfs:range :Party ;
-:isExecutiveOf a rdf:Property ;
-  rdfs:domain :Politician .
-  rdfs:range :Party ;
-:isDonator a rdf:Property ;
-  rdfs:domain :Person .
-  rdfs:range :Party ;
-:isInBusinessWith a rdf:Property ;
-  rdfs:domain :Person .
-  rdfs:range :Party ;
-:isRelatedTo a rdf:Property ;
-  rdfs:domain rdfs:Class .
-  rdfs:range rdfs:Class ;
-:isSubsadiaryOf a rdf:Property ;
-  rdfs:domain :Party .
-  rdfs:range :Party ;
+# Member -> data.key: position, type: activity, member, position
+
+:isMemberOf a rdf:Property ; # Mitglied, 
+  rdfs:domain foaf:Person ;
+  rdfs:range :Organization .
+:isExecutiveOf rdfs:isSubPropertyOf :isMemberOf .
+:isDonor a rdf:Property ; # -> data.key: position, type: donation, sponsoring
+  rdfs:domain foaf:Person ;
+  rdfs:range :Party .
+:isInBusinessWith a rdf:Property ; # -> data.key: position, type: buisiness
+  rdfs:domain foaf:Person ;
+  rdfs:range :Party .
+:isRelatedTo a rdf:Property ; # -> data.key:position, type: association
+  rdfs:domain rdfs:Class ;
+  rdfs:range rdfs:Class .
+:isSubsidiaryOf a rdf:Property ; # -> data.key:position, type: association, subisdiary, Tochterfirma
+  rdfs:domain :Party ;
+  rdfs:range :Party .
+:isRelatedToGovernment a rdf:Property ;
+  rdfs:domain foaf:Person ;
+  rdfs:range :Government .
+
+# executive, ececutive, Vorsitzender
+:isDirectorsBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Aufsichtsratsmitglied, Board of Directors, Mitglied des Aufsichtsrats, Mitglied im Aufsichtsrat, Lenkungsgruppe, Mitglied des Aufsichtsrates, Anteilseignervertreter, Stellvertretender Vorstandsvorsitzender des Aufsichtsrats
+:isManagementBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Vorstandsmitglied, Mitglied des Vorstands
+:isPresidentalBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Präsidialmitglied, Mitglied des Präsidiums, Präsidiumsmitglied
+:isChairmanOfManagementOf rdfs:isSubPropertyOf :isExecutiveOf . # Vorstandsvorsitz, Vorstandsvorsitzender, Vorsitzender des Vorstands
+:isManagementMemberOf rdfs:isSubPropertyOf :isExecutiveOf .  # Vorstand
+:isChairmanOfDirectorsBoardOf rdfs:isSubPropertyOf :isExecutiveOf . # Aufsichtsratsvorsitz, Vorsitzender des Aufsichtsrats
+:isFoundationBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Mitglied des Stiftungsrats, Stiftungsrat
+:isDirectorOf rdfs:isSubPropertyOf :isExecutiveOf . # Geschäftsführer, Hauptgeschäftsführer, CEO, Geschäftsführender Vorstand, Geschäftsführender Gesellschafter, Direktor
+:isPresidentOf rdfs:isSubPropertyOf :isExecutiveOf . # Präsident, Vorsitz, Vorsitzender, Präsidentin
+:isTrusteesBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Mitglied des Kuratoriums
+:isAdvisoryBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Mitglied im Beirat, Mitglied des Beirats, Beisitzer des Beirats
+:isVicePresidentOf rdfs:isSubPropertyOf :isExecutiveOf . # Stellvertretender Vorsitz, Vize-Präsident, Vizepräsident
+:isAdministrationBoardMemberOf rdfs:isSubPropertyOf :isExecutiveOf . # Mitglied des Verwaltungsrats
+:isOtherExecutiveOf rdfs:isSubPropertyOf :isExecutiveOf . # ...
+
+# member, activity, position
+:isOrdinaryMemberOf rdfs:isSubPropertyOf :isMemberOf . # Ordentliches Mitglied
+:isRepresentativeMemberOf rdfs:isSubPropertyOf :isMemberOf . # Stellvertretendes Mitglied
+:isChairmanOf rdfs:isSubPropertyOf :isMemberOf . # Obmann
+:isChairwomanOf rdfs:isSubPropertyOf :isMemberOf . # Obfrau
+:isAllianceMemberOf rdfs:isSubPropertyOf :isMemberOf . # Mitglied im Verband
+:isHonoraryMemberOf rdfs:isSubPropertyOf :isMemberOf . # Ehrenmitglied
+:isOtherMemberOf rdfs:isSubPropertyOf :isMemberOf . # ...
+ 
+# government, Bundesdatenschutzbeauftragte
+:isSecretaryOfStateOf rdfs:isSubPropertyOf :isRelatedToGovernment . #Staatssekretär, Parlamentarischer Staatssekretär, Parlamentarische Staatssekretärin, Staatssekretärin, 
+:isPrivyCouncilorOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Staatsrat, Staatsrätin
+:isMinisterOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Staatsminister, Staatsministerin, Bundesminister für Umwelt, Naturschutz und Reaktorsicherheit, Bundesministerin für Familie, Senioren, Frauen und Jugend, Bundesminister für Wirtschaft und Technologie, Minister für Inneres und Kommunales, Minister für Inneres und Sport, Bundesminister für Ernährung, Landwirtschaft und Verbraucherschutz, Bundesministerin für Bildung, Wissenschaft, Forschung und Technologie, Bundesminister für besondere Aufgaben, Bundesminister für Arbeit und Soziales, Bundesminister des Auswärtigen, Bundesminister des Inneren, Minister für Umwelt und Verbraucherschutz, Bundesminister für Verbraucherschutz, Ernährung und Landwirtschaft, Minister der Justiz und für Verbraucherschutz, Bundesminister für Verkehr, Bau und Stadtentwicklung, Staatsrätin für Bundesangelegenheiten, Europa und Integration, Ministerin für Arbeit, Gleichstellung und Soziales, Minister für Energie, Infrastruktur und Landesentwicklung, Ministerin für Kultus, Ministerin für Schule und Berufsbildung, Senator für Inneres und Sport, Ministerin für Bildung, Wissenschaft, Weiterbildung und Kultur, Minister für Wirtschaft, Arbeit und Verkehr, Ministerin für Arbeit, Soziales, Gesundheit, Frauen und Familie 
+:isPrimeMinisterOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Ministerpräsident, Ministerpräsidentin
+:isHeadOfStateChancelleryOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Chef der Staatskanzlei
+:isRepresentativeOfFederalChancellor rdfs:isSubPropertyOf :isRelatedToGovernment . # Stellvertreter der Bundeskanzlerin
+:isMinisterOfDefenseOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Bundesminister der Verteidigung
+:isRepresentativeOfPrimeMinisterOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Stellvertretender Ministerpräsident, Stellvertreter des Ministerpräsidenten, Stellvertretende Ministerpräsidentin
+:isFinanceMinisterOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Bundesminister der Finanzen, Finanzminister, Minister der Finanzen 
+:isJusticeMinisterOf rdfs:isSubPropertyOf :isRelatedToGovernment . # Minister der Justiz, Bundesministerin der Justiz, Justizministerin
+:isOtherwiseRelatedToGovernment rdfs:isSubPropertyOf :isRelatedToGovernment . #
