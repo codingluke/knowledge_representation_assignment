@@ -60,7 +60,7 @@
 :isSubsidiaryOf a rdf:Property ; # -> data.key:position, type: association, subisdiary, Tochterfirma
   rdfs:domain :Party ;
   rdfs:range :Party .
-:isRelatedToGovernment a rdf:Property ;
+:isRelatedToGovernment rdfs:isSubPropertyOf :isMemberOf ;
   rdfs:domain foaf:Person ;
   rdfs:range :Government .
 
