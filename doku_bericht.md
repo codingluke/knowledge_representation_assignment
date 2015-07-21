@@ -94,5 +94,9 @@ Zunächst mussten wir für einige Entitäten neue Klassen anlegen, da es zum Bei
 
 - rdflib sollte beim hinzufügen von Knoten prüfen, ob die gegebenen Tripel sinnhaft sind und auf Knoten verweisen, die bereits da sind. g.add() ist da nicht *verbose* genug und sollte ruhig mal meckern und nicht still alles hinnehmen.
 
+# Ausblick
+
+- Daten genauer anschauen, zB unterscheidung von Parteien zu anderen Organisationen
+- Machine Learning zur Identifikation von Lobbyisten.
 
 
