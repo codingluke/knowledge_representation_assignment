@@ -23,10 +23,11 @@ Zuerst werden wir die im Lobbyradar enthaltenen Informationen in einen RDF-Graph
 Danach werden wir eine Anbindung zu DBpedia entwickeln, in der Sparql-Queries zu den Entitäten des Graphen erstellt formuliert und abgeschickt werden können. Auch soll die Anwendung eine Suchworterweiterung bieten. 
 Die Ergebnisse der Queries sollen dann wiederum in den bestehenden Graphen eingepflegt werden, anschliessend wird ein Teilgraph angezeigt, ind dessen Zentrum die gesuchte Entität steht und der die Relationen zu anderen Entiäten aufzeigt. 
 
+
 # Analyse Lobbyradar
 Lobbyradar enthält Knoten welche in JSON persistiert sind. Damit werden alle Entities und Relations agbebildet. Die Knoten enthalten schon für sich eine große Zahl an Properties:
 
-```
+```json
 {'_id': '54bd3c768b934da06340f4c6',
  'aliases': [],
  'created': 'datetime.datetime(2015, 1, 19, 17, 18, 46, 529000)',
@@ -76,7 +77,7 @@ Für Personen und Organisationen:
 - alias *(nur bei Organisationen)*
 - tags *(als Interessengebiete)*
 
-Für die Relationen zwischen diesen Entitäten benötigen wir auch eine Klassifikation. Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vorhanden sind. Es ist leider jedoch nicht ohne weiteres möglich einer Relation in RDF eine beliebige Bezeichnung zu geben. Dazu würden Hilfsknoten benötigen, welche den Graphen stark verkomplizieren würdern. Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benamung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*). Daher haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen.
+Für die Relationen zwischen diesen Entitäten benötigen wir auch eine Klassifikation. Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vorhanden sind. Es ist leider jedoch nicht ohne weiteres möglich einer Relation in RDF eine beliebige Bezeichnung zu geben. Dazu würden Hilfsknoten benötigen, welche den Graphen stark verkomplizieren würden. Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benennung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*). Daher haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen.
 Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir also die restlichen Daten nicht Berücksichtigen.
 
 # Aufbau einer Ontologie
@@ -96,7 +97,7 @@ Zunächst mussten wir für einige Entitäten neue Klassen anlegen, da es zum Bei
 
 # Ausblick
 
-- Daten genauer anschauen, zB unterscheidung von Parteien zu anderen Organisationen
+- Daten genauer anschauen, z.B. Unterscheidung von Parteien zu anderen Organisationen
 - Machine Learning zur Identifikation von Lobbyisten.
 
 
@@ -113,22 +114,20 @@ Zu erst muss mal die Datei "Graph" und deren Funktionen importiert werden. Wicht
     %matplotlib inline # um schöne plotts zu erhalten
 ```
 
-## Nach personen suchen
+## Nach Personen suchen
 
-Mit der Methode __search_persons__ kann mit freitext nach Personen gesucht werden.
+Mit der Methode __search_persons__ kann mit Freitext nach Personen gesucht werden.
 
 ```python
     search_persons(name="angela m", limit=10)
-
-
-
 
     [u'Angela Merkel', u'Angela Marquardt']
 ```
 
 ## Verbindungen einer Person ausgeben
 
-Hat man den korrekten Namen der Person, kann mit Hilfe der Methode __person_connections__ nach "connections" also organisationen gesucht werden. Es wird eine Liste von Triples mit ('personenname', 'property', 'Organisationslabel') zurück gegeben.
+Hat man den korrekten Namen der Person, kann mit Hilfe der Methode __person_connections__ nach "connections" also Organisationen gesucht werden. Es wird eine Liste von Triples mit ('personenname', 'property', 'Organisationslabel') zurück gegeben.
+
 
 ```python
     angela_connections = person_connections("Angela Merkel")
@@ -154,7 +153,7 @@ Die Methode __plot_tripples__ visualisiert nun die tripples in einem Graphen. Da
 
 ## Nach Organisationen suchen
 
-Mit der Methode __search_organizations__ kann freitext nach Organisationen gesucht werden.
+Mit der Methode __search_organizations__ kann mit Freitext nach Organisationen gesucht werden.
 
 ```python
     search_organizations("SPD")
@@ -186,7 +185,7 @@ Zurück kommt wieder ein Tripple. Analog zur Methode __person_connections__
 
 ## Verbindungen einer Organisationen plotten
 
-Diese können dann wieder mit der Methode __plot_tripples__ geplotted werden. Wenn der Graphen zu gross wird, kann die grösse des plotts selbst über figsize angegeben werden.
+Diese können dann wieder mit der Methode __plot_tripples__ geplottet werden. Wenn der Graphen zu gross wird, kann die Größe des Plots selbst über figsize angegeben werden.
 
 ```python
     plot_tripples(org_conn_tripple, figsize=(25,25))
@@ -224,9 +223,9 @@ Mit der Methode __search_govenrmental__ kann ausschliesslich nach Bundesorganisa
 
 ## Eigene Sparql abfrage erstellen
 
-Mit der Methode __search_sparql__ kann ein eigenes Sparql querie abgeschickt werden. zurück erhält man ein rdflib query resultat. Dieses kann dann selbst nach belieben verwendet werden.
+Mit der Methode __search_sparql__ kann eine eigene Sparql Abfrage abgeschickt werden. Zurück erhält man ein rdflib Abfrage-Resultat. Dieses kann dann selbst nach belieben verwendet werden. 
 
-Z.B. Kann die Ontologie analysiert werden.
+Als Beispiel kann die Ontologie analysiert werden:
 
 ```python
     res = search_sparql(""" 
