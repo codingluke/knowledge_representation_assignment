@@ -19,13 +19,25 @@ Wir haben im Kurs bereits Erfahrungen mit dem [Lobbyradar des ZDF](https://githu
 
 <!-- Hier sollte wohl noch ein Erklärung hin, was das Lobbyradar überhaupt ist.-->
 
-Zuerst werden wir die im Lobbyradar enthaltenen Informationen in einen RDF-Graphen überführen. 
-Danach werden wir eine Anbindung zu DBpedia entwickeln, in der Sparql-Queries zu den Entitäten des Graphen erstellt formuliert und abgeschickt werden können. Auch soll die Anwendung eine Suchworterweiterung bieten. 
-Die Ergebnisse der Queries sollen dann wiederum in den bestehenden Graphen eingepflegt werden, anschliessend wird ein Teilgraph angezeigt, ind dessen Zentrum die gesuchte Entität steht und der die Relationen zu anderen Entiäten aufzeigt. 
+# Vorgehen 
+
+- Als Erstes werden wir die Daten des Lobbyradar auswerten und entscheiden, 
+welche Informationen sinnvoll in RDF konvertierbar sind.
+- Danach versuchen wir eine Ontologie anhand der gefundenen Beziehungen eine 
+Ontologie  abzuleiten.
+- Sind die wichtigen Informationen identifiziert, werden sie in einen RDF-Graphen exportiert.
+- Auch soll die Anwendung eine Personen und Organisations Suche bieten.
+Die Ergebnisse sollen dann wiederum in den bestehenden Graphen eingepflegt 
+werden, anschliessend wird ein Teilgraph angezeigt, ind dessen Zentrum die 
+gesuchte Entität steht und der die Relationen zu anderen Entiäten aufzeigt. 
+- Danach werden wir eine Anbindung zu DBpedia entwickeln, in der Sparql-Queries 
+zu den Entitäten des Graphen erstellt formuliert und abgeschickt werden können.
 
 
 # Analyse Lobbyradar
-Lobbyradar enthält Knoten welche in JSON persistiert sind. Damit werden alle Entities und Relations agbebildet. Die Knoten enthalten schon für sich eine große Zahl an Properties:
+Lobbyradar enthält Knoten welche in JSON persistiert sind. Damit werden alle 
+Entities und Relations abgebildet. Die Knoten enthalten schon für sich eine 
+große Zahl an Properties:
 
 ```json
 {'_id': '54bd3c768b934da06340f4c6',
@@ -77,8 +89,10 @@ Für Personen und Organisationen:
 - alias *(nur bei Organisationen)*
 - tags *(als Interessengebiete)*
 
-Für die Relationen zwischen diesen Entitäten benötigen wir auch eine Klassifikation. Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vorhanden sind. Es ist leider jedoch nicht ohne weiteres möglich einer Relation in RDF eine beliebige Bezeichnung zu geben. Dazu würden Hilfsknoten benötigen, welche den Graphen stark verkomplizieren würden. Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benennung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*). Daher haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen.
-Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir also die restlichen Daten nicht Berücksichtigen.
+Für die Relationen zwischen diesen Entitäten benötigen wir eine Klassifikation. Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vorhanden sind. Es ist leider nicht ohne weiteres möglich einer Relation (Property) in RDF eine zusätzliche Bezeichnung als Literal zu geben. Dazu würden Hilfsknoten benötigen, welche den Graphen und somit die Suche stark verkomplizieren würden. 
+Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benennung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*), haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen. Die properties wurden so in der Datei "ontology.ttl" als hierarchisch zusammengefasst.
+
+__Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir also die restlichen Daten nicht Berücksichtigen.__
 
 # Aufbau einer Ontologie
 
@@ -101,7 +115,7 @@ Zunächst mussten wir für einige Entitäten neue Klassen anlegen, da es zum Bei
 - Machine Learning zur Identifikation von Lobbyisten.
 
 
-# Benutzung von Lobbyradar
+# Benutzung des Programms, Lobbyradar
 
 Zu erst muss mal die Datei "Graph" und deren Funktionen importiert werden. Wichtig zu wissen ist das die libraries _pymongo_, _bson_, _rdflib_, _networkx_ und _matplotlib_ vorhanden sind.
 
