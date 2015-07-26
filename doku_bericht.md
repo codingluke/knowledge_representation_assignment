@@ -23,15 +23,13 @@ Wir haben im Kurs bereits Erfahrungen mit dem [Lobbyradar des ZDF](https://githu
 
 - Als Erstes werden wir die Daten des Lobbyradar auswerten und entscheiden, 
 welche Informationen sinnvoll in RDF konvertierbar sind.
-- Danach versuchen wir eine Ontologie anhand der gefundenen Beziehungen eine 
-Ontologie  abzuleiten.
+- Danach versuchen wir eine Ontologie anhand der gefundenen Beziehungen abzuleiten.
 - Sind die wichtigen Informationen identifiziert, werden sie in einen RDF-Graphen exportiert.
-- Auch soll die Anwendung eine Personen und Organisations Suche bieten.
+- Auch soll die Anwendung eine Personen- und Organisations-Suche bieten.
 Die Ergebnisse sollen dann wiederum in den bestehenden Graphen eingepflegt 
-werden, anschliessend wird ein Teilgraph angezeigt, ind dessen Zentrum die 
+werden, anschliessend wird ein Teilgraph angezeigt, in dessen Zentrum die 
 gesuchte Entität steht und der die Relationen zu anderen Entiäten aufzeigt. 
-- Danach werden wir eine Anbindung zu DBpedia entwickeln, in der Sparql-Queries 
-zu den Entitäten des Graphen erstellt formuliert und abgeschickt werden können.
+- Danach werden wir eine Anbindung zu DBpedia entwickeln, in der Sparql-Queries zu den Entitäten des Graphen erstellt formuliert und abgeschickt werden können.
 
 
 # Analyse Lobbyradar
@@ -39,7 +37,7 @@ Lobbyradar enthält Knoten welche in JSON persistiert sind. Damit werden alle
 Entities und Relations abgebildet. Die Knoten enthalten schon für sich eine 
 große Zahl an Properties:
 
-```json
+```
 {'_id': '54bd3c768b934da06340f4c6',
  'aliases': [],
  'created': 'datetime.datetime(2015, 1, 19, 17, 18, 46, 529000)',
@@ -89,31 +87,82 @@ Für Personen und Organisationen:
 - alias *(nur bei Organisationen)*
 - tags *(als Interessengebiete)*
 
-Für die Relationen zwischen diesen Entitäten benötigen wir eine Klassifikation. Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vorhanden sind. Es ist leider nicht ohne weiteres möglich einer Relation (Property) in RDF eine zusätzliche Bezeichnung als Literal zu geben. Dazu würden Hilfsknoten benötigen, welche den Graphen und somit die Suche stark verkomplizieren würden. 
-Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benennung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*), haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen. Die properties wurden so in der Datei "ontology.ttl" als hierarchisch zusammengefasst.
+Für die Relationen zwischen diesen Entitäten benötigen wir eine Klassifikation. 
+
+Die verschiedenen Bezeichnungen für die Ämter und Anstellungsverhältnisse der Personen, also ihre Positionen in der Lobbyradar-Datenbank, sind jedoch stark arbiträr, gehorchen keiner Syntax und liegen nur als Literal vor. 
+Es ist leider nicht ohne weiteres möglich einer Relation (Property) in RDF eine zusätzliche Bezeichnung als Literal zu geben. Dazu würden wir Hilfsknoten benötigen, welche den Graphen und somit die Suche stark verkomplizieren würden. 
+
+Da in der Datenbank auch viele Positionen mit semantisch gleichem Inhalt unterschiedliche Bezeichnungen haben, entweder weil keine einheitliche Benennung vorgegeben ist (*z.B. Bundesminister der Finanzen, Finanzminister, Minister der Finanzen*) oder weil die Importeure Tippfehler gemacht haben (*executive, ececutive*), haben wir uns entschieden, die wichtigsten Relationen semantisch zu gruppieren und für diese zusammenfassende Properties zu erstellen. 
+
+Die properties wurden so in der Datei "ontology.ttl" hierarchisch zusammengefasst.
 
 __Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir also die restlichen Daten nicht Berücksichtigen.__
 
 # Aufbau einer Ontologie
 
 ## Konvertierung der Daten in RDF
+Um die Daten in RDF übertragen zu können, mussten wir zunächst eine hierarchische Ontologie in `ontology.ttl` nach Turtle-Syntax erstellen.
 
 ## T-Box
 Zunächst mussten wir für einige Entitäten neue Klassen anlegen, da es zum Beispiel für Dinge wie *BTCertUID* oder *Bundesland* noch keine RDFS-Klassen gibt. 
 
+Die wichtigsten Klassen sind dabei:
+
+```ttl
+  # Partei
+  :Party a rdfs:Class ;
+    rdfs:subClassOf org:Organization .
+
+  # Regierung
+  :Government a rdfs:Class ;
+    rdfs:subClassOf org:Organization .
+
+  # Politiker
+  :Politician a rdfs:Class ;
+    rdfs:subClassOf foaf:Person .
+  
+  # Lobbyist
+  :Lobbyist a rdfs:Class ;
+    rdfs:subClassOf foaf:Person .
+```
+
+Auch mussten wir eigene Properties anlegen, zum Beispiel:
+
+``` 
+  # Mitglied
+  :isMemberOf a rdf:Property ; 
+    rdfs:domain foaf:Person ;
+    rdfs:range :Organization .
+  
+  #Vorsitzender
+  :isExecutiveOf rdfs:isSubPropertyOf :isMemberOf . 
+
+  # steht in Verbindung mit einer Regierung
+  :isRelatedToGovernment rdfs:isSubPropertyOf :isMemberOf ;
+    rdfs:domain foaf:Person ;
+    rdfs:range :Government .
+```
+
+Mit diesen drei Properties oder deren subProperties werden die Relationen zwischen Personen und Organisationen oder Personen und Regierungen dargestellt. Diese subProperties sind beispielsweise:
+
+```
+  # Stellvertretender Vorsitz, Vize-Präsident
+  :isVicePresidentOf rdfs:isSubPropertyOf :isExecutiveOf . 
+
+  # Obmann
+  :isChairmanOf rdfs:isSubPropertyOf :isMemberOf . 
+
+  #Staatssekretär
+  isSecretaryOfStateOf rdfs:isSubPropertyOf :isRelatedToGovernment . 
+```
+
+Die Zuordnung war nicht trivial, da wir uns über passende Oberbegriffe gedanken machen mussten und die Einordnung von Hand geschehen musste.
+
 ## A-Box
 
+# Aufbau des Graphen
+
 # Anbindung zu DBpedia
-
-# Nachbetrachtung
-
-- rdflib sollte beim hinzufügen von Knoten prüfen, ob die gegebenen Tripel sinnhaft sind und auf Knoten verweisen, die bereits da sind. g.add() ist da nicht *verbose* genug und sollte ruhig mal meckern und nicht still alles hinnehmen.
-
-# Ausblick
-
-- Daten genauer anschauen, z.B. Unterscheidung von Parteien zu anderen Organisationen
-- Machine Learning zur Identifikation von Lobbyisten.
-
 
 # Benutzung des Programms, Lobbyradar
 
@@ -263,6 +312,13 @@ Als Beispiel kann die Ontologie analysiert werden:
     http://example.org/isExecutiveOf -> http://example.org/isChairmanOfDirectorsBoardOf
     ...
 
+# Nachbetrachtung
 
+- rdflib sollte beim hinzufügen von Knoten prüfen, ob die gegebenen Tripel sinnhaft sind und auf Knoten verweisen, die bereits da sind. g.add() ist da nicht *verbose* genug und sollte ruhig mal meckern und nicht still alles hinnehmen.
+
+# Ausblick
+
+- Daten genauer anschauen, z.B. Unterscheidung von Parteien zu anderen Organisationen
+- Machine Learning zur Identifikation von Lobbyisten.
 
 
