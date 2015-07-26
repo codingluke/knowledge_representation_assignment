@@ -1,7 +1,4 @@
-
 # coding: utf-8
-
-# In[59]:
 
 import pymongo
 from pymongo import MongoClient
@@ -11,8 +8,6 @@ import rdflib
 from pprint import pprint
 import networkx as nx
 import matplotlib.pyplot as plt
-
-# In[2]:
 
 client = MongoClient()
 db = client.lobbyradar
@@ -25,8 +20,6 @@ entity_filter = { 'type' : 'entity' }
 persons = Entities.find(person_filter)
 entities = Entities.find(entity_filter)
 
-
-# In[3]:
 
 # executive, ececutive, Vorsitzender
 directors_board_members = ['Aufsichtsratsmitglied', 'Board of Directors', 'Mitglied des Aufsichtsrats', 'Mitglied im Aufsichtsrat', 'Lenkungsgruppe', 'Mitglied des Aufsichtsrates', 'Anteilseignervertreter', 'Stellvertretender Vorstandsvorsitzender des Aufsichtsrats']

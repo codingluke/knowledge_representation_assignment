@@ -3,9 +3,10 @@
 % 21. Juli 2015
 
 # Aufgabenstellung
+
 Die gegebene Aufgabenstellung lautete:
 
-Führen Sie ein Semantic Web / Linked Data Projekt durch. Dies sollte mehrere der folgenden Aspekte umfassen.
+Führen Sie ein Semantic Web / Linked Data Projekt durch. Dies sollte mehrere der folgenden Aspekte umfassen:
 
  - Verknüpfen von verschiedenen Datenquellen
  - Konvertierung von Daten ins RDF-Format (mit entsprechender T-Box)
@@ -262,6 +263,88 @@ Als Beispiel kann die Ontologie analysiert werden:
     http://example.org/isMemberOf -> http://example.org/isRelatedToGovernment
     http://example.org/isExecutiveOf -> http://example.org/isChairmanOfDirectorsBoardOf
     ...
+
+## dbPedia informationen einer Person anzeigen
+
+Mit der Methode __dbpedia_person__ kann in dbpedia über eine spezifische Person informationen abgefragt werden. Momenan werden einfach die dbpedia uri und eine kleine biographie der Person ausgegeben. Wenn es mehrere Personen gibt die gleich heissen werden mehrere Zeilen zurückgegeben.
+
+```python
+dbpedia_person("Angela Merkel")
+
+[(u'http://dbpedia.org/resource/Angela_Merkel',
+  u'beschreibung sehr lange...')]
+```
+
+__Uri von Angela Merkel bei dbpedia__ 
+http://dbpedia.org/resource/Angela_Merkel
+
+__Abstract von Angela Merkel aus dbpedia__
+Angela Dorothea Merkel (* 17. Juli 1954 in Hamburg als Angela Dorothea Kasner) ist eine deutsche Politikerin. Bei der Bundestagswahl am 2. Dezember 1990 errang Merkel, die in der DDR als  Physikerin ausgebildet wurde und auch tätig war, erstmals ein Bundestagsmandat; in allen darauffolgenden sechs Bundestagswahlen wurde sie in ihrem Wahlkreis direkt gewählt. Von 1991 bis 1994 war Merkel Bundesministerin für Frauen und Jugend im Kabinett Kohl IV und von 1994 bis 1998 Bundesministerin für Umwelt, Naturschutz und Reaktorsicherheit im Kabinett Kohl V. Von 1998 bis 2000 amtierte sie als Generalsekretärin der CDU. Seit dem 10. April 2000 ist sie Bundesvorsitzende der CDU und seit dem 22. November 2005 2013 mittlerweile in der dritten Amtsperiode als Chefin von unterschiedlich zusammengesetzten Koalitionsregierungen deutsche Bundeskanzlerin. Sie ist die erste Frau und zugleich die achte Person in der Geschichte der Bundesrepublik, die dieses Amt innehat.
+
+## Eigene Sparql Anfrage an dbpedia senden
+
+Möchte man nun noch genauere Informationen über die Person finden, kann man auch eine eigene Sparql Anfrage senden.
+
+```python
+dbpedia_sparql_query("""
+SELECT ?person ?birthDate
+WHERE {
+    ?person a dbpedia-owl:Person .
+    ?person foaf:name ?name .
+    ?person dbpedia-owl:birthDate ?birthDate .
+    ?person dbpedia-owl:birthPlace ?birthPlace .
+    FILTER(str(?person) = 'http://dbpedia.org/resource/Angela_Merkel')
+}""")
+```
+
+zurück erhaltält man eine JSON in folgender Struktur, wobei die wichtigen informationen unter json["results"]["bindings"] stehen. Auch wichtig zu wissen ist, dass die duplizierten Einträge aus den Einträgen aller Sprachen resultieren.
+
+```json
+{
+   "head":{
+      "link":[
+
+      ],
+      "vars":[
+         "person",
+         "birthDate"
+      ]
+   },
+   "results":{
+      "distinct":false,
+      "ordered":true,
+      "bindings":[
+         {
+            "person":{
+               "type":"uri",
+               "value":"http://dbpedia.org/resource/Angela_Merkel"
+            },
+            "birthDate":{
+               "type":"typed-literal",
+               "datatype":"http://www.w3.org/2001/XMLSchema#date",
+               "value":"1954-07-17"
+            }
+         },
+         {
+            "person":{
+               "type":"uri",
+               "value":"http://dbpedia.org/resource/Angela_Merkel"
+            },
+            "birthDate":{
+               "type":"typed-literal",
+               "datatype":"http://www.w3.org/2001/XMLSchema#date",
+               "value":"1954-07-17"
+            }
+         },
+         ...
+      ]
+   }
+}
+```
+
+Dieses Json kann nun geparst und ausgelesen werden.
+
+
 
 
 
