@@ -103,7 +103,7 @@ __Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir 
 # Aufbau der Ontologie
 
 ## Konvertierung der Daten in RDF
-Um die Daten in RDF überführen zu können, mussten wir zunächst eine hierarchische Ontologie in `ontology.ttl` nach Turtle-Syntax erstellen.
+Um die Daten in RDF überführen zu können, müssen wir zunächst eine hierarchische Ontologie in `ontology.ttl` nach Turtle-Syntax erstellen.
 
 ## T-Box
 
@@ -166,15 +166,15 @@ Die Zuordnung war nicht trivial, da wir uns über passende Oberbegriffe Gedanken
 
 ## A-Box
 
-Zunächst wurde über alle _Persons_ und _Entities_ in der Datenbank iteriert und  dementsprechend Knoten im RDF-Graphen erstellt. Jeder dieser Knoten erhielt die Properties `DC:identifier`, `DC:created` und `DC:modified`. Wenn der Eintrag vom Typ Person war, wurde er der Klasse `FOAF:Person`  zugeordnet, der Name wurde durch das RDF-Property `FOAF:name` angegeben. Da es sich um tatsächliche Personen handelt, fanden wir das Friend-Of-A-Friend-Vokabular angemessen.
+Zunächst wird über alle _Persons_ und _Entities_ in der Datenbank iteriert und  dementsprechend Knoten im RDF-Graphen erstellt. Jeder dieser Knoten erhält die Properties `DC:identifier`, `DC:created` und `DC:modified`. Wenn der Eintrag vom Typ Person ist, wird er der Klasse `FOAF:Person`  zugeordnet, der Name wird durch das RDF-Property `FOAF:name` angegeben. Da es sich um tatsächliche Personen handelt, fanden wir das Friend-Of-A-Friend-Vokabular angemessen.
 
-Ansonsten erhielt er die Klasse `ORG:Organization`, deren Name als `SKOS:prefLabel` gespeichert wird. Wenn ein `alias` vorhanden war, wurde dieses in Form einer `SKOS:altLabel`-Property repräsentiert. Diese Wahl wurde für uns schon durch den ORG-Namespace getroffen, welche das Simple Knowledge Organization System (SKOS) referenziert und spezifiziert, dass `SKOS:prefLabel` für den rechtlich relevanten Namen einer Organisation und `SKOS:altLabel` für alle anderen bekannten Namen verwendet werden sollen.
+Ansonsten erhält er die Klasse `ORG:Organization`, deren Name als `SKOS:prefLabel` gespeichert wird. Wenn ein `alias` vorhanden ist, wird dieses in Form einer `SKOS:altLabel`-Property repräsentiert. Diese Wahl wurde für uns schon durch den ORG-Namespace getroffen, welche das Simple Knowledge Organization System (SKOS) referenziert und spezifiziert, dass `SKOS:prefLabel` für den rechtlich relevanten Namen einer Organisation und `SKOS:altLabel` für alle anderen bekannten Namen verwendet werden sollen.
 
-Ausserdem wurden alle Tags (siehe BSON `tags`) als `FOAF:topic_interest`-Property angefügt.
+Ausserdem werden alle Tags (siehe BSON `tags`) als `FOAF:topic_interest`-Property angefügt.
 
-Für die Zuordnung der Relationen mussten wir zunächst Listen erstellen, die verschiedenen Bezeichnungen analog zu unserer Turtle-Ontologie zusammenfassen. Also zum Beispiel, dass die Bezeichnungen _Präsident, Vorsitz, Vorsitzender, Präsidentin_ alle der Liste _Presidents_ angehören und somit als RDF-Property `OWN:isPresidentOf` abgebildet werden.
+Für die Zuordnung der Relationen müssen wir zunächst Listen erstellen, die verschiedenen Bezeichnungen analog zu unserer Turtle-Ontologie zusammenfassen. Also zum Beispiel, dass die Bezeichnungen _Präsident, Vorsitz, Vorsitzender, Präsidentin_ alle der Liste _Presidents_ angehören und somit als RDF-Property `OWN:isPresidentOf` abgebildet werden.
 
-Anschliessend iterierten wir zum Beispiel über alle Relationen vom Typ _executive_ (oder _ececutive_, _Vorsitzender_). Dann prüften wir ob die angegebene Bezeichnung der Position in einer der Listen zu finden ist, die die RDF-subProperties von `OWN:isExecutiveOf` darstellen. Die Person-Organisation-Relation wurde dann mit der passendsten Property abgebildet, falls sie nicht in einer Liste enthalten war, wurde sie als `OWN:isOtherExecutiveOf` angefügt.
+Anschliessend iterieren wir zum Beispiel über alle Relationen vom Typ _executive_ (oder _ececutive_, _Vorsitzender_). Dann prüfen wir ob die angegebene Bezeichnung der Position in einer der Listen zu finden ist, die die RDF-subProperties von `OWN:isExecutiveOf` darstellen. Die Person-Organisation-Relation wird dann mit der passendsten Property abgebildet, falls sie nicht in einer Liste enthalten ist, wird sie als `OWN:isOtherExecutiveOf` angefügt.
 
 Analog verfahren wir mit allen Relationen vom Typ _member, activity_ oder _position_ und dem OWN:isMemberOf-Property oder den Relationen der Typen _government_ und _Bundesdatenschutzbeauftragte_ und `OWN:isRelatedToGovernment`.
 
@@ -205,7 +205,7 @@ Mit der Methode __search_persons__ kann mittels Freitext nach Personen gesucht w
 
 ## Verbindungen einer Person ausgeben
 
-Hat man den korrekten Namen der Person identifiziert, kann mit Hilfe der Methode __person_connections__ nach "connections", also in unserem Fall Organisationen, gesucht werden. Es wird eine Liste von Tripeln mit ('personenname', 'property', 'Organisationslabel') zurück gegeben.
+Hat man den korrekten Namen der Person identifiziert, kann mit Hilfe der Methode __person_connections__ nach "Connections", also in unserem Fall Organisationen, gesucht werden. Es wird eine Liste von Tripeln mit ('personenname', 'property', 'Organisationslabel') zurück gegeben.
 Dabei ist die Information, welcher tatsächliche RDF-Typ dahinter steckt, aus Übersichtsgründen weggelassen worden.
 
 ```python
@@ -225,7 +225,7 @@ Dabei ist die Information, welcher tatsächliche RDF-Typ dahinter steckt, aus Ü
 Die Methode __plot_triples__ visualisiert nun die Tripel in einem Graphen. Dabei werden die "Subjekte" Grün und die "Objekte" rot dargestellt. In unserem Fall sind die Personen grün und die Organisationen rot dargestellt.
 
 ```python
-    plot_tripples(angela_connections)
+    plot_triples(angela_connections)
 ```
 
 ![Angela Merkels Verbindungen](images/output_8_0.png)
@@ -308,7 +308,7 @@ Mit der Methode __search_governmental__ kann ausschliesslich nach Bundesorganisa
 
 ## Eigene Sparql abfrage erstellen
 
-Mit der Methode __search_sparql__ kann eine eigene Sparql Abfrage abgeschickt werden. Zurück erhält man ein rdflib-Abfrage-Resultat, dieses kann dann selbst nach belieben verwendet werden. 
+Mit der Methode __search_sparql__ kann eine eigene Sparql-Anfrage abgeschickt werden. Zurück erhält man ein rdflib-Abfrage-Resultat, dieses kann dann selbst nach belieben verwendet werden. 
 
 Als Beispiel kann die Ontologie analysiert werden:
 
@@ -336,7 +336,7 @@ Als Beispiel kann die Ontologie analysiert werden:
 
 ## DBpedia-Informationen einer Person anzeigen
 
-Mit der Methode __dbpedia_person__ können in DBpedia über eine spezifische Person informationen abgefragt werden. Momenan werden die DBpedia-URI und eine kleine Biographie der Person ausgegeben. Wenn es mehrere Personen gibt die gleich heißen werden mehrere Zeilen zurückgegeben.
+Mit der Methode __dbpedia_person__ können in DBpedia über eine spezifische Person Informationen abgefragt werden. Momentan werden die DBpedia-URI und eine kleine Biographie der Person ausgegeben. Wenn es mehrere Personen gibt die gleich heißen, werden mehrere Zeilen zurückgegeben.
 
 ```python
 dbpedia_person("Angela Merkel")
