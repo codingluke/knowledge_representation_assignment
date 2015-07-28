@@ -342,7 +342,7 @@ def organization_connections(name):
 
 # In[16]:
 
-def plot_tripples(connections_triple, figsize=(20,10)):
+def plot_triples(connections_triple, figsize=(20,10)):
     """Plottet tripples in einem einfachen Graph"""
     G = nx.Graph()
     for obj, prt, sub in connections_triple:
