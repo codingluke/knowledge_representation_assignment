@@ -1,11 +1,21 @@
 # Knowledge Representation
 
-# Benötigte Python Pakete
+# Dependencies
+
+## Python
+
+- ipython
 - pymongo
 - bson
 - rdflib
 - networkx
 - matplotlib
+
+## MongoDB
+Mongodb muss installiert sein und zusätzlich dazu die Datenbank vom lobbyradar.
+
+[Lobbyradar](https://github.com/lobbyradar/lobbyradar)
+[Lobbyradar dump](https://github.com/lobbyradar/dumps)
 
 # Starten des Programs
 
@@ -17,10 +27,10 @@ __BenutzungLobbyRadar.ipynb:__
 Script welches die Benutzung der Programmes aufzeigt.
 
 __Graph.ipynb:__
-Die erstellung des RDF-Graph und definitionen der Abfragefunktionen.
+Die Erstellung des RDF-Graph und definitionen der Abfragefunktionen.
 
 __Ontology.ipynb:__
-Scripte zur durchsuchung der MongoDB um eine Ontologie ab zu leiten
+Verwendete Scripte zur Durchsuchung der MongoDB um eine Ontologie ab zu leiten.
 
 __dbpedia.ipynb:__
 Definitionen der dbpedia Abfragefunkonen.
