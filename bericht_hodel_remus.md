@@ -102,6 +102,10 @@ __Diese Zuordnung mussten wir händisch erledigen, aus Zeitgründen konnten wir 
 
 # Aufbau der Ontologie
 
+## Bild
+
+![Ontologie](images/Ontology.png)
+
 ## Konvertierung der Daten in RDF
 Um die Daten in RDF überführen zu können, müssen wir zunächst eine hierarchische Ontologie in `ontology.ttl` nach Turtle-Syntax erstellen.
 
