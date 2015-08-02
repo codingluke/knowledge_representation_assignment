@@ -1,6 +1,6 @@
 % Projekt-Bericht und Dokumentation im Kurs Wissensrepräsentation SoSe15
 % Lukas Hodel; Richard Remus
-% 21. Juli 2015
+% 30. Juli 2015
 
 # Aufgabenstellung
 
@@ -18,7 +18,7 @@ Führen Sie ein Semantic Web / Linked Data Projekt durch. Dies sollte mehrere de
 
 # Idee
 
-Wir haben im Kurs bereits Erfahrungen mit dem [Lobbyradar des ZDF](https://github.com/lobbyradar/lobbyradar "ZDF Lobbyradar") und [DBpedia]("http://wiki.dbpedia.org") gemacht.
+Wir haben im Kurs bereits Erfahrungen mit dem [Lobbyradar des ZDF](https://github.com/lobbyradar/lobbyradar "ZDF Lobbyradar") [@lobbyradar] und [DBpedia]("http://wiki.dbpedia.org") [@dbpedia] gemacht.
 
 ## Lobbyradar
 
@@ -34,7 +34,7 @@ Die Daten liegen in einer MongoDB in einer losen Struktur vor. Möchte man nun m
 2. Aus den Daten muss eine Ontologie abgeleitet werden.
 3. Sind die wichtigen Informationen identifiziert, werden sie in einen RDF-Graphen exportiert.
 4. Ist der Graph aufgebaut, werden Standardsuchfunktionen per SPARQL definiert.
-5. Auch ist eine Anbindung zum weiteren Informationsgewinn von Personen an [DBpedia]("http://wiki.dbpedia.org"). 
+5. Auch ist eine Anbindung zum weiteren Informationsgewinn von Personen an [DBpedia]("http://wiki.dbpedia.org") [@dbpedia]. 
 
 # Analyse Lobbyradar
 
@@ -112,9 +112,9 @@ Um die Daten in RDF überführen zu können, müssen wir zunächst eine hierarch
 ## T-Box
 
 Grundsätzlich muss man sich bei der Erstellung der Ontologie entscheiden, ob man direkt bereits vorhandene Namespaces verwendet oder einen eigenen erstellt.
-Wir haben uns entschieden, eine Kombination aus vorhanenden Namespaces und einem eigenen zu erstellen, wobei die eigenen Klassen von den ähnlichsten, "offiziellen" Klassen abgeleitet wurden. Dabei haben wir die Erfahrung gemacht, dass es sehr schwer ist, für ein spezielles Themengebiet, taugliche (eindeutige) offizielle Klassen zu finden.
+Wir haben uns entschieden, eine Kombination aus vorhandenen Namespaces und einem eigenen zu erstellen, wobei die eigenen Klassen von den ähnlichsten, "offiziellen" Klassen abgeleitet wurden. Dabei haben wir die Erfahrung gemacht, dass es sehr schwer ist, für ein spezielles Themengebiet, taugliche (eindeutige) offizielle Klassen zu finden. Diese Suche nach Vokabularen, welche auf die vom Lobbyradar beschriebenen Eigenschaften der Entitäten gut passen, bildete sich als eine zeitaufwändige und selten erfolgreiche Tätigkeit heraus.
 
-Die wichtigsten Klassen sind dabei:
+Die wichtigsten Klassen der entstandenen Ontologie sind:
 
 ```ttl
   # Partei
@@ -186,13 +186,13 @@ __Die A-Box und die T-Box stellen gemeinsam den semantischen Graphen dar.__
 
 # Benutzung des Programms, Lobbyradar
 
-Zu erst muss die Datei `Graph.py` und deren Funktionen importiert werden. Wichtig zu wissen ist, dass die Libraries _pymongo_, _bson_, _rdflib_, _networkx_ und _matplotlib_ vorhanden sein müssen.
+Zu erst muss die Datei `Graph.py` und deren Funktionen importiert werden. Wichtig zu wissen ist, dass die Libraries [_pymongo_](ttps://pypi.python.org/pypi/pymongo) [@pymongo], [_bson_](https://pypi.python.org/pypi/bson/0.4.0) [@bson], [_rdflib_](https://github.com/RDFLib/rdflib/) [@rdflib], [_networkx_](http://networkx.github.io) [@networkx] und [_matplotlib_](http://matplotlib.org) [@matplotlib] vorhanden sein müssen.
 
 ```python
     import Graph
     from Graph import search_persons, person_connections,  \
                       search_organizations, \
-                      organization_connections, plot_tripples, \
+                      organization_connections, plot_triples, \
                       search_governmental, search_sparql
     %matplotlib inline 
 ```
@@ -251,8 +251,8 @@ Nun kann mit der Methode __organization_connections__ nach Personen-Verbindungen
 Als Ergebnis erhält man wiederum Tripel, analog zur Methode __person_connections__.
 
 ```python
-    org_conn_tripple = organization_connections("SPD-Bundestagsfraktion")
-    org_conn_tripple[:4]
+    org_conn_triple = organization_connections("SPD-Bundestagsfraktion")
+    org_conn_triple[:4]
 
     [(u'Bernhard Daldrup',
       u'http://example.org/isOtherMemberOf',
@@ -273,7 +273,7 @@ Als Ergebnis erhält man wiederum Tripel, analog zur Methode __person_connection
 Diese können dann wiederum mit der Methode __plot_triples__ geplottet werden. Wenn der Graph zu groß wird, kann die Größe des Plots selbst über den Parameter `figsize?` angegeben werden. Siehe dazu Figure 2.
 
 ```python
-    plot_tripples(org_conn_tripple, figsize=(25,25))
+    plot_triples(org_conn_triple, figsize=(25,25))
 ```
 
 ![Mit SPD-Bundestagsfraktion im Zusammenhang stehende Personen](images/output_14_0.png)
@@ -305,7 +305,7 @@ Mit der Methode __search_governmental__ kann ausschliesslich nach Bundesorganisa
 ```
 
 ```python
-    plot_tripples(organization_connections("Bundesministerium der Justiz"))
+    plot_triples(organization_connections("Bundesministerium der Justiz"))
 ```
 
 ![Mit Bundesministerium der Justiz im Zusammenhang stehende Personen](images/output_17_0.png)
@@ -447,3 +447,5 @@ Um die Daten im globalen Semantic Web zu Verfügung zu stellen könnte man analo
 ## Fazit
 
 Unsere Idee der semantischen Aufbereitung des Lobbyradars ist in Anbetracht der Beziehungen zwischen Personen und Organisationen geglückt. Dabei handelt es sich aber, wie man leicht sieht, zunächst um einen Anfang. Im Vergleich zum Lobbyradar, ist unsere Umsetzung ungleich weniger detailliert, dafür aber semantisch klarer. Die Ontologie legt die Struktur besser offen. 
+
+# Quellen
