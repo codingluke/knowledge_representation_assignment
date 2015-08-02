@@ -1,6 +1,6 @@
 % Projekt-Bericht und Dokumentation im Kurs Wissensrepräsentation SoSe15
 % Lukas Hodel; Richard Remus
-% 30. Juli 2015
+% 1. August 2015
 
 # Aufgabenstellung
 
