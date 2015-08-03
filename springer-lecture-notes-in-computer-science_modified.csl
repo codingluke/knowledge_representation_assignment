@@ -116,10 +116,15 @@
             </date>
           </group>
         </else-if>
-        <else-if type="webpage">
+        <else-if type="webpage online" match="any">
           <group delimiter=", ">
             <text macro="title"/>
             <text variable="URL"/>
+            <date variable="issued">
+              <date-part name="day" prefix="Stand: " suffix=". "/>
+              <date-part name="month" suffix=" "/>
+              <date-part name="year" prefix=" " suffix=" "/>
+            </date>
           </group>
         </else-if>
         <else-if type="speech">
@@ -136,11 +141,6 @@
           <group delimiter=", ">
             <text macro="title"/>
             <text variable="URL"/>
-            <date variable="issued">
-              <date-part name="day" prefix="Stand: " suffix=". "/>
-              <date-part name="month" suffix=" "/>
-              <date-part name="year" prefix=" " suffix=" "/>
-            </date>
           </group>
         </else>
       </choose>
