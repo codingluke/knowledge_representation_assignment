@@ -33,10 +33,10 @@ def dbpedia_person(name):
         SELECT ?person ?abstract
         WHERE {
             ?person foaf:name ?name .
-            ?person dbpedia-owl:abstract ?abstract .
+            ?person dbo:abstract ?abstract .
             FILTER(
-                lcase(str(?name)) = \"""" + name.lower() + """\" &&
-                langMatches(lang(?abstract),"de")
+                str(?name) = \"""" + name + """\" && 
+                langMatches(lang(?abstract),"de") 
             )
         }"""
     result = dbpedia_sparql_query(q,"http://dbpedia.org/sparql")
