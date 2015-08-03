@@ -12,6 +12,7 @@
 - matplotlib 1.3.1
 
 ## MongoDB
+
 Mongodb muss installiert sein und zusätzlich dazu die Datenbank vom lobbyradar.
 
 [Lobbyradar](https://github.com/lobbyradar/lobbyradar)
@@ -37,7 +38,7 @@ Definitionen der dbpedia Abfragefunkonen.
 
 ## Python scripte
 
-__Graph.py:__
+__graph.py:__
 Die erstellung des RDF-Graph und definitionen der Abfragefunktionen als
 python Datei zur Verwendung.
 
