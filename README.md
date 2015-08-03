@@ -2,14 +2,14 @@
 
 # Dependencies
 
-## Python
+## Python 2.7.6
 
-- ipython
-- pymongo
+- ipython 3.2.1
+- pymongo 3.0.2
 - bson
-- rdflib
-- networkx
-- matplotlib
+- rdflib 4.2.0
+- networkx 1.9.1
+- matplotlib 1.3.1
 
 ## MongoDB
 Mongodb muss installiert sein und zusätzlich dazu die Datenbank vom lobbyradar.
