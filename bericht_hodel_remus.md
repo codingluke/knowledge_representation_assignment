@@ -423,7 +423,7 @@ Dieses JSON könnte nun geparst und ausgelesen werden.
 
 ### Das Web ändert sich
 
-Kurz bevor wir die Arbeit abschicken wollten, haben wir nochmals die dbpedia Anfragen getestet und festgestellt, dass diese nicht mehr funktionieren. Nach gründlicher Analyse ist uns aufgefallen, dass dbpedia ihr standard Präfix für die Ontologie von _dbpedia-owl_ zu _dbo_ geändert hat. Wir haben in unseren dbpedia Anfragen die dbpedia Ontologie nicht selbst angegeben. Diese wird automatisch von dbpedia aufgelöst. Nun haben wir explizit mit folgender Ergänzung die dbpedia Ontologie angegeben `PREFIX dbo: <http://dbpedia.org/ontology/>`. Wenn dbpedia nun ihren standard Präfix ändert funktionieren unsere Anfragen in Zukunft trotzdem noch.
+Kurz bevor wir die Arbeit abschicken wollten, haben wir nochmals die dbpedia Anfragen getestet und festgestellt, dass diese nicht mehr funktionieren. Nach gründlicher Analyse ist uns aufgefallen, dass dbpedia ihre standard Präfixzuweisung für die Ontologie von _dbpedia-owl_ zu _dbo_ geändert hat. Wir haben in unseren dbpedia Anfragen die dbpedia Ontologie nicht selbst gebunden. Diese wird automatisch von dbpedia aufgelöst. Nun haben wir explizit mit folgender Ergänzung den Präfix der dbpedia Ontologie definiert. `PREFIX dbo: <http://dbpedia.org/ontology/>`. Wenn dbpedia nun ihren standard Präfix ändert funktionieren unsere Anfragen in Zukunft trotzdem noch.
 
 Dies zeigt sehr schön auf, dass Applikationen, welche fremde Ressourcen verwenden in deren Abhängigkeit stehen und sich so auf Zeit Fehler einschleichen können. Es ist desshalb sehr wichtig, dass sich öffentliche Schnittstellen wenn möglich nicht ändern.
 
