@@ -361,14 +361,17 @@ Möchte man nun noch genauere Informationen über die Person finden, kann man au
 
 ```python
 dbpedia_sparql_query("""
-SELECT ?person ?birthDate
-WHERE {
-    ?person a dbpedia-owl:Person .
-    ?person foaf:name ?name .
-    ?person dbpedia-owl:birthDate ?birthDate .
-    ?person dbpedia-owl:birthPlace ?birthPlace .
-    FILTER(str(?person) = 'http://dbpedia.org/resource/Angela_Merkel')
-}""")
+  PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+  PREFIX dbo: <http://dbpedia.org/ontology/>
+  SELECT ?person ?birthDate
+  WHERE {
+      ?person a dbo:Person .
+      ?person foaf:name ?name .
+      ?person dbo:birthDate ?birthDate .
+      ?person dbo:birthPlace ?birthPlace .
+      FILTER(str(?person) = 'http://dbpedia.org/resource/Angela_Merkel')
+  }
+""")
 ```
 
 zurück erhält man ein JSON folgender Struktur, wobei die wichtigen Informationen unter json["results"]["bindings"] stehen. Auch ist wichtig zu wissen, dass die duplizierten Einträge aus den Einträgen aller Sprachen resultieren.
@@ -418,6 +421,12 @@ zurück erhält man ein JSON folgender Struktur, wobei die wichtigen Information
 
 Dieses JSON könnte nun geparst und ausgelesen werden.
 
+### Das Web ändert sich
+
+Kurz bevor wir die Arbeit abschicken wollten, haben wir nochmals die dbpedia Anfragen getestet und festgestellt, dass diese nicht mehr funktionieren. Nach gründlicher Analyse ist uns aufgefallen, dass dbpedia ihr standard Präfix für die Ontologie von _dbpedia-owl_ zu _dbo_ geändert hat. Wir haben in unseren dbpedia Anfragen die dbpedia Ontologie nicht selbst angegeben. Diese wird automatisch von dbpedia aufgelöst. Nun haben wir explizit mit folgender Ergänzung die dbpedia Ontologie angegeben `PREFIX dbo: <http://dbpedia.org/ontology/>`. Wenn dbpedia nun ihren standard Präfix ändert funktionieren unsere Anfragen in Zukunft trotzdem noch.
+
+Dies zeigt sehr schön auf, dass Applikationen, welche fremde Ressourcen verwenden in deren Abhängigkeit stehen und sich so auf Zeit Fehler einschleichen können. Es ist desshalb sehr wichtig, dass sich öffentliche Schnittstellen wenn möglich nicht ändern.
+
 # Nachbetrachtung
 
 ## RDF-Validierung
@@ -429,8 +438,6 @@ Wir sind zufällig auf das Problem gestoßen, dass durch Tippfehler auf Klassen 
 ## _Real-World_-Datensatz
 
 Das Projekt hat uns sehr gut gezeigt, dass Daten die von Menschen erhoben wurden, auch das menschliche Interpretationsvermögen zum verstehen der Daten nach sich ziehen. So mussten wir viel Zeit darin investieren, die vorhandene Struktur zu durchdringen.
-
-# Nachbetrachtung
 
 ## Weitere Klassifikationen
 
