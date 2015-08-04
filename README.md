@@ -47,6 +47,35 @@ Definitionen der dbpedia Abfragefunkonen zur Verwendung
 
 __ontology.ttl:__ Eigene Ontologie im Turtleformat.
 
+# Bericht
+
+__bericht_hodel_remus.md:__
+Markdown Version vom Bericht.
+
+__bericht_hodel_remus.pdf:__
+durch Pandoc gerenderte PDF Version vom Bericht.
+
+## Dateien zur Berichterstellung
+__panbuild.sh:__
+script zur PDF generierung
+
+__titlesec.tex:__
+LaTex configs für pandoc
+
+__springer-lecture-notes-in-computer-science_modified.csl:__ 
+Formatierungsdefinition der Bibliographie
+
+__bericht.bib:__
+Bibliographie in Json Format.
+
+__images__
+Ordner mit den Bilder, hat relative Beziehung zu bericht_hodel_remus.md.
+
+__Ontology.dia:__
+Dia File. Grafische darstellung der Ontologie.
+
+
+
 ## Schema Links
 - FOAF http://xmlns.com/foaf/spec/
 - DC http://dublincore.org/documents/2012/06/14/dcmi-terms/
