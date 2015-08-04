@@ -62,7 +62,7 @@ script zur PDF generierung
 __titlesec.tex:__
 LaTex configs für pandoc
 
-__springer-lecture-notes-in-computer-science_modified.csl:__ 
+__springer-lecture-notes-in-computer-science_modified.csl:__
 Formatierungsdefinition der Bibliographie
 
 __bericht.bib:__
@@ -81,4 +81,5 @@ Dia File. Grafische darstellung der Ontologie.
 - DC http://dublincore.org/documents/2012/06/14/dcmi-terms/
 - SKOS http://www.w3.org/TR/2008/WD-skos-reference-20080829/skos.html
 - ORG http://www.w3.org/TR/vocab-org/
+- DBO http://dbpedia.org/ontology/
 
